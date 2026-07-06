@@ -280,7 +280,6 @@
             .players-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; } 
             .player-name { font-size: 1.2rem; } 
             .player-img-container { height: 250px; }
-            .games-container { max-height: 60vh; }
         }
     </style>
 </head>
@@ -573,8 +572,13 @@
                     setTimeout(() => document.getElementById('shatterOverlay').classList.remove('active'), 300);
                     openModal(player.id);
                 };
+                // Универсальная загрузка картинок: сначала .png, потом .jpg, с проверкой регистра
+                const imgSrcPng = `images/${player.id}.png`;
+                const imgSrcJpg = `images/${player.id}.jpg`;
                 card.innerHTML = `
-                    <div class="player-img-container"><img src="images/${player.id}.png" onerror="this.src='images/${player.id}.jpg'; this.onerror=function(){this.src='https://via.placeholder.com/300x300/222/fff?text=No+Img'}" alt="${player.id}" class="player-img"></div>
+                    <div class="player-img-container">
+                        <img src="${imgSrcPng}" onerror="this.src='${imgSrcJpg}'; this.onerror=function(){this.src='https://via.placeholder.com/300x300/222/fff?text=No+Img'; this.onerror=null;}" alt="${player.id}" class="player-img">
+                    </div>
                     <div class="card-footer"><div class="clock-wrapper"><div class="clock-face"><div class="clock-inner"><div class="moon-center"></div><div class="roman-num r-12">XII</div><div class="roman-num r-3">III</div><div class="roman-num r-6">VI</div><div class="roman-num r-9">IX</div><div class="hand hand-hour"></div><div class="hand hand-minute"></div><div class="hand hand-second"></div><div class="pin"></div></div></div></div><div class="player-name">${player.id}</div><div class="player-role">${player.role}</div></div>
                 `;
                 grid.appendChild(card);
